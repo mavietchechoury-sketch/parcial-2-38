@@ -1,5 +1,4 @@
-const { Menu } = require('../models');
-const { Op } = require('sequelize');
+import { Menu } from '../models/index.js';
 
 async function listarMenus({ fecha, tipo, activo } = {}) {
   const where = {};
@@ -10,4 +9,4 @@ async function listarMenus({ fecha, tipo, activo } = {}) {
   return Menu.findAll({ where, order: [['fecha', 'ASC'], ['nombre', 'ASC']] });
 }
 
-module.exports = { listarMenus };
+export { listarMenus };

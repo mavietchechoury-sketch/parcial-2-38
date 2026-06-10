@@ -1,5 +1,5 @@
-const { Op } = require('sequelize');
-const { Pedido, Menu, Usuario, HistorialPedido } = require('../models');
+import { Op } from 'sequelize';
+import { Pedido, Menu, Usuario, HistorialPedido, sequelize } from '../models/index.js';
 
 const ESTADOS_ACTIVOS = ['pendiente', 'confirmado'];
 
@@ -261,9 +261,6 @@ async function cambiarEstado(id, nuevoEstado, usuarioId) {
 }
 
 async function obtenerResumen() {
-  const { sequelize } = require('../models');
-  const { QueryTypes } = require('sequelize');
-
   const pedidosPorEstado = await Pedido.findAll({
     attributes: ['estado', [sequelize.fn('COUNT', sequelize.col('id')), 'cantidad']],
     group: ['estado'],
@@ -305,7 +302,7 @@ async function obtenerResumen() {
   };
 }
 
-module.exports = {
+export {
   listarPedidos,
   obtenerPedido,
   obtenerHistorial,

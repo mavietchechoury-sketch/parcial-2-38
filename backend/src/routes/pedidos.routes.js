@@ -1,23 +1,23 @@
-const { Router } = require('express');
-const pedidosController = require('../controllers/pedidos.controller');
-const { authenticateToken } = require('../middlewares/auth.middleware');
-const { authorizeRole, authorizeOwnerOrAdmin } = require('../middlewares/authorization.middleware');
-const { validateCrearPedido, validateEditarPedido } = require('../middlewares/validation.middleware');
+import { Router } from 'express';
+import { listar, resumen, detalle, historial, crear, editar, cancelar, confirmar, entregar } from '../controllers/pedidos.controller.js';
+import { authenticateToken } from '../middlewares/auth.middleware.js';
+import { authorizeRole, authorizeOwnerOrAdmin } from '../middlewares/authorization.middleware.js';
+import { validateCrearPedido, validateEditarPedido } from '../middlewares/validation.middleware.js';
 
 const router = Router();
 
 // IMPORTANTE: /resumen debe ir antes de /:id para que no sea interpretado como un id
-router.get('/resumen', authenticateToken, authorizeRole('admin'), pedidosController.resumen);
+router.get('/resumen', authenticateToken, authorizeRole('admin'), resumen);
 
-router.get('/', authenticateToken, pedidosController.listar);
-router.get('/:id', authenticateToken, pedidosController.detalle);
-router.get('/:id/historial', authenticateToken, pedidosController.historial);
+router.get('/', authenticateToken, listar);
+router.get('/:id', authenticateToken, detalle);
+router.get('/:id/historial', authenticateToken, historial);
 
-router.post('/', authenticateToken, validateCrearPedido, pedidosController.crear);
-router.put('/:id', authenticateToken, authorizeOwnerOrAdmin, validateEditarPedido, pedidosController.editar);
+router.post('/', authenticateToken, validateCrearPedido, crear);
+router.put('/:id', authenticateToken, authorizeOwnerOrAdmin, validateEditarPedido, editar);
 
-router.patch('/:id/cancelar', authenticateToken, authorizeOwnerOrAdmin, pedidosController.cancelar);
-router.patch('/:id/confirmar', authenticateToken, authorizeRole('admin'), pedidosController.confirmar);
-router.patch('/:id/entregar', authenticateToken, authorizeRole('admin'), pedidosController.entregar);
+router.patch('/:id/cancelar', authenticateToken, authorizeOwnerOrAdmin, cancelar);
+router.patch('/:id/confirmar', authenticateToken, authorizeRole('admin'), confirmar);
+router.patch('/:id/entregar', authenticateToken, authorizeRole('admin'), entregar);
 
-module.exports = router;
+export default router;

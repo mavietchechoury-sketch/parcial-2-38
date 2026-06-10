@@ -1,4 +1,4 @@
-const authService = require('../services/auth.service');
+import * as authService from '../services/auth.service.js';
 
 async function register(req, res, next) {
   try {
@@ -26,4 +26,4 @@ async function login(req, res, next) {
   }
 }
 
-module.exports = { register, login };
+export { register, login };

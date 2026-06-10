@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { Usuario } = require('../models');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { Usuario } from '../models/index.js';
 
 async function register({ nombre, email, password, rol }) {
   const existente = await Usuario.findOne({ where: { email } });
@@ -57,4 +57,4 @@ async function login({ email, password }) {
   return { token, usuario: payload };
 }
 
-module.exports = { register, login };
+export { register, login };

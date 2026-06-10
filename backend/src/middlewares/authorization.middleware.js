@@ -1,4 +1,4 @@
-const { Pedido } = require('../models');
+import { Pedido } from '../models/index.js';
 
 function authorizeRole(...roles) {
   return (req, res, next) => {
@@ -30,4 +30,4 @@ async function authorizeOwnerOrAdmin(req, res, next) {
   }
 }
 
-module.exports = { authorizeRole, authorizeOwnerOrAdmin };
+export { authorizeRole, authorizeOwnerOrAdmin };

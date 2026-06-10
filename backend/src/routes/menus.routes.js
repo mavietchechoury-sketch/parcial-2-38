@@ -1,9 +1,9 @@
-const { Router } = require('express');
-const menusController = require('../controllers/menus.controller');
-const { authenticateToken } = require('../middlewares/auth.middleware');
+import { Router } from 'express';
+import { listar } from '../controllers/menus.controller.js';
+import { authenticateToken } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.get('/', authenticateToken, menusController.listar);
+router.get('/', authenticateToken, listar);
 
-module.exports = router;
+export default router;

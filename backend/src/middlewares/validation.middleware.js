@@ -41,4 +41,4 @@ function validateEditarPedido(req, res, next) {
   next();
 }
 
-module.exports = { validateCrearPedido, validateEditarPedido };
+export { validateCrearPedido, validateEditarPedido };

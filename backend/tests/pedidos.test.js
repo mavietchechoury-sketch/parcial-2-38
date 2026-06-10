@@ -1,11 +1,7 @@
-process.env.NODE_ENV = 'test';
-process.env.JWT_SECRET = 'test_secret_key';
-process.env.JWT_EXPIRES_IN = '1h';
-
-const request = require('supertest');
-const bcrypt = require('bcryptjs');
-const app = require('../app');
-const { sequelize, Usuario, Menu, Pedido } = require('../src/models');
+import request from 'supertest';
+import bcrypt from 'bcryptjs';
+import app from '../app.js';
+import { sequelize, Usuario, Menu, Pedido } from '../src/models/index.js';
 
 let tokenAdmin, tokenUser, adminId, userId, menuId, pedidoId, pedidoEntregadoId;
 const hoy = new Date().toISOString().split('T')[0];

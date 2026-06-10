@@ -1,11 +1,11 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
 
-const authRoutes = require('./src/routes/auth.routes');
-const menusRoutes = require('./src/routes/menus.routes');
-const pedidosRoutes = require('./src/routes/pedidos.routes');
-const errorHandler = require('./src/middlewares/error.middleware');
+import authRoutes from './src/routes/auth.routes.js';
+import menusRoutes from './src/routes/menus.routes.js';
+import pedidosRoutes from './src/routes/pedidos.routes.js';
+import errorHandler from './src/middlewares/error.middleware.js';
 
 const app = express();
 
@@ -18,4 +18,4 @@ app.use('/api/pedidos', pedidosRoutes);
 
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

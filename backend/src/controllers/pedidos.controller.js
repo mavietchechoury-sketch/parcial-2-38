@@ -1,4 +1,4 @@
-const pedidosService = require('../services/pedidos.service');
+import * as pedidosService from '../services/pedidos.service.js';
 
 async function listar(req, res, next) {
   try {
@@ -96,4 +96,4 @@ async function entregar(req, res, next) {
   }
 }
 
-module.exports = { listar, resumen, detalle, historial, crear, editar, cancelar, confirmar, entregar };
+export { listar, resumen, detalle, historial, crear, editar, cancelar, confirmar, entregar };

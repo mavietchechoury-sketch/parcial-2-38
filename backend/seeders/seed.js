@@ -1,6 +1,6 @@
-require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
-const bcrypt = require('bcryptjs');
-const { sequelize, Usuario, Menu, Pedido, HistorialPedido } = require('../src/models');
+import 'dotenv/config';
+import bcrypt from 'bcryptjs';
+import { sequelize, Usuario, Menu, Pedido, HistorialPedido } from '../src/models/index.js';
 
 async function seed() {
   await sequelize.sync({ force: true });
