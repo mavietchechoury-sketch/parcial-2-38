@@ -24,6 +24,7 @@ const Pedido = sequelize.define('Pedido', {
   cantidad: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    validate: { min: 1 },
   },
   turnoEntrega: {
     type: DataTypes.ENUM('almuerzo', 'cena'),

@@ -26,10 +26,12 @@ const Menu = sequelize.define('Menu', {
   precio: {
     type: DataTypes.FLOAT,
     allowNull: false,
+    validate: { min: 0 },
   },
   cupoDiario: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    validate: { min: 1 },
   },
   activo: {
     type: DataTypes.BOOLEAN,
