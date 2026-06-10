@@ -21,9 +21,11 @@ export default function FormularioPedidoPage() {
   const cantidadSeleccionada = watch('cantidad');
 
   useEffect(() => {
-    if (fechaSeleccionada) {
-      getMenus({ fecha: fechaSeleccionada, activo: true }).then((res) => setMenus(res.data));
+    if (!fechaSeleccionada) {
+      setMenus([]);
+      return;
     }
+    getMenus({ fecha: fechaSeleccionada, activo: true }).then((res) => setMenus(res.data));
   }, [fechaSeleccionada]);
 
   useEffect(() => {
@@ -71,81 +73,89 @@ export default function FormularioPedidoPage() {
 
   return (
     <div className="page">
-      <h2>{esEdicion ? 'Editar Pedido' : 'Nuevo Pedido'}</h2>
+      <div className="page-header">
+        <div>
+          <p className="eyebrow">Pedido</p>
+          <h1>{esEdicion ? 'Editar pedido' : 'Nuevo pedido'}</h1>
+          <p className="page-subtitle">Completá los datos del menú, fecha, entrega y retiro del pedido.</p>
+        </div>
+      </div>
 
-      <div className="card" style={{ maxWidth: '600px' }}>
+      <div className="card form-card">
         {apiError && <div className="alert alert-error">{apiError}</div>}
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
-            <label>Fecha del pedido</label>
-            <input
-              type="date"
-              {...register('fecha', { required: 'La fecha es requerida' })}
-            />
-            {errors.fecha && <p className="form-error">{errors.fecha.message}</p>}
-          </div>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>Fecha del pedido</label>
+              <input
+                type="date"
+                {...register('fecha', { required: 'La fecha es requerida' })}
+              />
+              {errors.fecha && <p className="form-error">{errors.fecha.message}</p>}
+            </div>
 
-          <div className="form-group">
-            <label>Menú disponible</label>
-            <select {...register('menuId', { required: 'Seleccioná un menú' })}>
-              <option value="">-- Seleccionar menú --</option>
-              {menus.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.nombre} ({m.tipo}) — ${m.precio?.toLocaleString()} | Cupo: {m.cupoDiario}
-                </option>
-              ))}
-            </select>
-            {errors.menuId && <p className="form-error">{errors.menuId.message}</p>}
-            {!fechaSeleccionada && <p style={{ fontSize: '0.82rem', color: '#666' }}>Seleccioná una fecha para ver los menús disponibles.</p>}
-            {fechaSeleccionada && menus.length === 0 && <p className="form-error">No hay menús activos para esa fecha.</p>}
-          </div>
+            <div className="form-group">
+              <label>Menú disponible</label>
+              <select {...register('menuId', { required: 'Seleccioná un menú' })}>
+                <option value="">Seleccioná un menú</option>
+                {menus.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.nombre} ({m.tipo}) - ${m.precio?.toLocaleString()}
+                  </option>
+                ))}
+              </select>
+              {errors.menuId && <p className="form-error">{errors.menuId.message}</p>}
+              {!fechaSeleccionada && <p className="form-helper">Seleccioná una fecha para ver los menús disponibles.</p>}
+              {fechaSeleccionada && menus.length === 0 && <p className="form-error">No hay menús activos para esa fecha.</p>}
+            </div>
 
-          <div className="form-group">
-            <label>Cantidad</label>
-            <input
-              type="number"
-              min="1"
-              {...register('cantidad', { required: 'La cantidad es requerida', min: { value: 1, message: 'Debe ser mayor a 0' } })}
-            />
-            {errors.cantidad && <p className="form-error">{errors.cantidad.message}</p>}
-          </div>
+            <div className="form-group">
+              <label>Cantidad</label>
+              <input
+                type="number"
+                min="1"
+                {...register('cantidad', { required: 'La cantidad es requerida', min: { value: 1, message: 'Debe ser mayor a 0' } })}
+              />
+              {errors.cantidad && <p className="form-error">{errors.cantidad.message}</p>}
+            </div>
 
-          <div className="form-group">
-            <label>Turno de entrega</label>
-            <select {...register('turnoEntrega', { required: 'Seleccioná un turno' })}>
-              <option value="almuerzo">Almuerzo</option>
-              <option value="cena">Cena</option>
-            </select>
-          </div>
+            <div className="form-group">
+              <label>Turno de entrega</label>
+              <select {...register('turnoEntrega', { required: 'Seleccioná un turno' })}>
+                <option value="almuerzo">Almuerzo</option>
+                <option value="cena">Cena</option>
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Punto de retiro</label>
-            <input
-              {...register('puntoRetiro', { required: 'El punto de retiro es requerido' })}
-              placeholder="Ej: Campus - Buffet A"
-            />
-            {errors.puntoRetiro && <p className="form-error">{errors.puntoRetiro.message}</p>}
-          </div>
+            <div className="form-group full">
+              <label>Punto de retiro</label>
+              <input
+                {...register('puntoRetiro', { required: 'El punto de retiro es requerido' })}
+                placeholder="Ej: Campus - Buffet A"
+              />
+              {errors.puntoRetiro && <p className="form-error">{errors.puntoRetiro.message}</p>}
+            </div>
 
-          <div className="form-group">
-            <label>Observaciones (opcional)</label>
-            <textarea {...register('observaciones')} rows={3} placeholder="Sin sal, extra salsa..." />
+            <div className="form-group full">
+              <label>Observaciones (opcional)</label>
+              <textarea {...register('observaciones')} rows={3} placeholder="Sin sal, extra salsa..." />
+            </div>
           </div>
 
           {menuActual && (
-            <div className="alert alert-info" style={{ marginBottom: '1rem' }}>
+            <div className="alert alert-info">
               <strong>Total estimado: ${totalEstimado.toLocaleString()}</strong>
               <br /><small>El total final es calculado y confirmado por el servidor.</small>
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Guardando...' : (esEdicion ? 'Guardar cambios' : 'Crear pedido')}
-            </button>
+          <div className="form-actions">
             <button type="button" className="btn btn-secondary" onClick={() => navigate('/pedidos')}>
               Cancelar
+            </button>
+            <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Guardando...' : (esEdicion ? 'Guardar cambios' : 'Crear pedido')}
             </button>
           </div>
         </form>

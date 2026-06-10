@@ -13,16 +13,18 @@ export default function Navbar() {
   if (!usuario) return null;
 
   return (
-    <nav>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-        <strong>Viandas</strong>
-        <Link to="/pedidos">Mis Pedidos</Link>
-        <Link to="/pedidos/nuevo">Nuevo Pedido</Link>
-        {usuario.rol === 'admin' && <Link to="/resumen">Resumen</Link>}
+    <nav className="app-nav">
+      <div className="nav-left">
+        <strong className="brand"><span className="brand-mark">V</span> Viandas</strong>
+        <div className="nav-links">
+          <Link className="nav-link" to="/pedidos">Mis Pedidos</Link>
+          <Link className="nav-link" to="/pedidos/nuevo">Nuevo Pedido</Link>
+          {usuario.rol === 'admin' && <Link className="nav-link" to="/resumen">Resumen</Link>}
+        </div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <span style={{ fontSize: '0.88rem' }}>
-          {usuario.nombre} <span style={{ opacity: 0.75 }}>({usuario.rol})</span>
+      <div className="nav-right">
+        <span className="user-pill">
+          <strong>{usuario.nombre}</strong> <span>({usuario.rol})</span>
         </span>
         <button className="btn btn-secondary btn-sm" onClick={handleLogout}>
           Salir
