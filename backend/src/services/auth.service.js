@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Usuario } from '../models/index.js';
 
-async function register({ nombre, email, password, rol }) {
+async function register({ nombre, email, password }) {
   const existente = await Usuario.findOne({ where: { email } });
   if (existente) {
     const err = new Error('Ya existe un usuario con ese email');
@@ -15,7 +15,7 @@ async function register({ nombre, email, password, rol }) {
     nombre,
     email,
     passwordHash,
-    rol: rol || 'usuario',
+    rol: 'usuario',
     activo: true,
   });
 
