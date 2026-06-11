@@ -86,7 +86,7 @@ La validación ocurre en `pedidos.service.js → calcularCupoUsado()`.
 
 - Al hacer login, el backend genera un JWT firmado con `JWT_SECRET` (expira en 24h).
 - El payload contiene: `{ id, nombre, email, rol }`. **No incluye contraseña.**
-- El frontend almacena el token en `localStorage` y lo inyecta via interceptor de Axios en el header `Authorization: Bearer <token>`.
+- El frontend almacena el token en `sessionStorage` y lo inyecta via interceptor de Axios en el header `Authorization: Bearer <token>`.
 - **Rol `usuario`:** puede crear, ver y cancelar sus propios pedidos.
 - **Rol `admin`:** puede ver todos los pedidos, confirmar, cancelar, entregar, y acceder al resumen.
 - Las rutas de escritura protegidas devuelven **401** sin token y **403** con token pero rol insuficiente.
@@ -118,6 +118,29 @@ Los 10 tests cubren: login correcto/inválido, listado con/sin filtros, detalle 
 ## Persistencia
 
 Se usa SQLite con Sequelize. La base de datos se guarda en `backend/database.sqlite` y persiste entre reinicios. En tests se usa `:memory:` para aislamiento.
+
+## Estructura y división de responsabilidades
+
+El proyecto está dividido en dos módulos independientes con responsabilidades claras:
+
+**Backend** (`backend/`) — Mavie y Emi
+- `src/models/` — modelos Sequelize: Usuario, Menu, Pedido, HistorialPedido
+- `src/routes/` — definición de rutas con express.Router()
+- `src/controllers/` — reciben el request, delegan al service, devuelven respuesta
+- `src/services/` — lógica de negocio: validación de cupo, cálculo de total, historial
+- `src/middlewares/` — autenticación JWT, autorización por rol/propietario, validación de entrada, manejo centralizado de errores
+- `seeders/seed.js` — datos iniciales de prueba
+- `tests/pedidos.test.js` — pruebas automatizadas con Jest y Supertest
+
+**Frontend** (`frontend/`) — Ale y Mili
+- `src/context/AuthContext.jsx` — estado global de autenticación (usuario, token, rol)
+- `src/components/RutaProtegida.jsx` — protección de rutas por autenticación y rol
+- `src/services/` — capa Axios separada por recurso (auth, pedidos, menús)
+- `src/pages/` — pantallas: Login, Pedidos, Formulario, Detalle, Resumen, NotFound
+
+**Persistencia:** SQLite con Sequelize. La base de datos se recrea con `npm run seed`. En tests se usa `:memory:` para aislamiento.
+
+---
 
 ## Limitaciones conocidas
 

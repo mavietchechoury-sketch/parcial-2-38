@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { getMenus } from '../services/menusService';
-import { createPedido, getPedido, updatePedido } from '../services/pedidosService';
+import { obtenerMenus } from '../services/menusService';
+import { crearPedido, obtenerPedido, editarPedido } from '../services/pedidosService';
 
 export default function FormularioPedidoPage() {
   const { id } = useParams();
@@ -25,13 +25,13 @@ export default function FormularioPedidoPage() {
       setMenus([]);
       return;
     }
-    getMenus({ fecha: fechaSeleccionada, activo: true }).then((res) => setMenus(res.data));
+    obtenerMenus({ fecha: fechaSeleccionada, activo: true }).then((res) => setMenus(res.data));
   }, [fechaSeleccionada]);
 
   useEffect(() => {
     if (!esEdicion) return;
     setCargando(true);
-    getPedido(id).then((res) => {
+    obtenerPedido(id).then((res) => {
       const p = res.data;
       setValue('fecha', p.fecha);
       setValue('menuId', p.menuId);
@@ -39,7 +39,7 @@ export default function FormularioPedidoPage() {
       setValue('turnoEntrega', p.turnoEntrega);
       setValue('puntoRetiro', p.puntoRetiro);
       setValue('observaciones', p.observaciones || '');
-      getMenus({ fecha: p.fecha, activo: true }).then((r) => setMenus(r.data));
+      obtenerMenus({ fecha: p.fecha, activo: true }).then((r) => setMenus(r.data));
     }).catch(() => setApiError('No se pudo cargar el pedido')).finally(() => setCargando(false));
   }, [id]);
 
@@ -59,9 +59,9 @@ export default function FormularioPedidoPage() {
         observaciones: data.observaciones || undefined,
       };
       if (esEdicion) {
-        await updatePedido(id, payload);
+        await editarPedido(id, payload);
       } else {
-        await createPedido(payload);
+        await crearPedido(payload);
       }
       navigate('/pedidos');
     } catch (err) {

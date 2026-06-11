@@ -1,3 +1,3 @@
 import api from './axiosInstance';
 
-export const getMenus = (params) => api.get('/menus', { params });
+export const obtenerMenus = (params) => api.get('/menus', { params });

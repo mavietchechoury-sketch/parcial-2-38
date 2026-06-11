@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getResumen } from '../services/pedidosService';
+import { obtenerResumen } from '../services/pedidosService';
 
 const BADGE = { pendiente: 'badge-pendiente', confirmado: 'badge-confirmado', cancelado: 'badge-cancelado', entregado: 'badge-entregado' };
 
@@ -9,7 +9,7 @@ export default function ResumenPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    getResumen()
+    obtenerResumen()
       .then((res) => setData(res.data))
       .catch((err) => setError(err.response?.data?.error || 'Error al cargar el resumen'))
       .finally(() => setCargando(false));

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getPedido, getHistorial, cancelarPedido, confirmarPedido, entregarPedido } from '../services/pedidosService';
+import { obtenerPedido, obtenerHistorial, cancelarPedido, confirmarPedido, entregarPedido } from '../services/pedidosService';
 
 const BADGE = { pendiente: 'badge-pendiente', confirmado: 'badge-confirmado', cancelado: 'badge-cancelado', entregado: 'badge-entregado' };
 
@@ -19,7 +19,7 @@ export default function DetallePedidoPage() {
     setCargando(true);
     setError('');
     try {
-      const [resPedido, resHistorial] = await Promise.all([getPedido(id), getHistorial(id)]);
+      const [resPedido, resHistorial] = await Promise.all([obtenerPedido(id), obtenerHistorial(id)]);
       setPedido(resPedido.data);
       setHistorial(resHistorial.data);
     } catch (err) {

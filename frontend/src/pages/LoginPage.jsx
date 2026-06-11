@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
-import { login, register } from '../services/authService';
+import { autenticar, registrar } from '../services/authService';
 
 export default function LoginPage() {
   const [modo, setModo] = useState('login');
@@ -16,11 +16,11 @@ export default function LoginPage() {
     setApiError('');
     try {
       if (modo === 'login') {
-        const res = await login({ email: data.email, password: data.password });
+        const res = await autenticar({ email: data.email, password: data.password });
         iniciarSesion(res.data.token, res.data.usuario);
         navigate('/pedidos');
       } else {
-        await register({ nombre: data.nombre, email: data.email, password: data.password });
+        await registrar({ nombre: data.nombre, email: data.email, password: data.password });
         setModo('login');
         setApiError('');
         alert('Registro exitoso. Ahora podés iniciar sesión.');
@@ -92,11 +92,6 @@ export default function LoginPage() {
             )}
           </p>
 
-          <div className="alert alert-info" style={{ marginTop: '1rem', fontSize: '0.82rem' }}>
-            <strong>Usuarios de prueba:</strong><br />
-            Admin: admin@viandas.com / admin123<br />
-            Usuario: maria@viandas.com / user123
-          </div>
         </div>
       </main>
     </div>

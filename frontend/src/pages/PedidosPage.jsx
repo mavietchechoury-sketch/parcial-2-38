@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getPedidos, cancelarPedido, confirmarPedido, entregarPedido } from '../services/pedidosService';
+import { obtenerPedidos, cancelarPedido, confirmarPedido, entregarPedido } from '../services/pedidosService';
 
 const BADGE = { pendiente: 'badge-pendiente', confirmado: 'badge-confirmado', cancelado: 'badge-cancelado', entregado: 'badge-entregado' };
 
@@ -22,7 +22,7 @@ export default function PedidosPage() {
     try {
       const params = { ...filtros, page, limit: 8, sortBy: 'createdAt', order: 'DESC' };
       Object.keys(params).forEach((k) => { if (!params[k]) delete params[k]; });
-      const res = await getPedidos(params);
+      const res = await obtenerPedidos(params);
       setPedidos(res.data.pedidos);
       setMeta({ total: res.data.total, page: res.data.page, totalPages: res.data.totalPages });
     } catch {
