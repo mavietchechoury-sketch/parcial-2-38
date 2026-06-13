@@ -123,7 +123,7 @@ Se usa SQLite con Sequelize. La base de datos se guarda en `backend/database.sql
 
 El proyecto está dividido en dos módulos independientes con responsabilidades claras:
 
-**Backend** (`backend/`) — Mavie y Emi
+**Backend** (`backend/`) 
 - `src/models/` — modelos Sequelize: Usuario, Menu, Pedido, HistorialPedido
 - `src/routes/` — definición de rutas con express.Router()
 - `src/controllers/` — reciben el request, delegan al service, devuelven respuesta
@@ -132,7 +132,7 @@ El proyecto está dividido en dos módulos independientes con responsabilidades 
 - `seeders/seed.js` — datos iniciales de prueba
 - `tests/pedidos.test.js` — pruebas automatizadas con Jest y Supertest
 
-**Frontend** (`frontend/`) — Ale y Mili
+**Frontend** (`frontend/`)
 - `src/context/AuthContext.jsx` — estado global de autenticación (usuario, token, rol)
 - `src/components/RutaProtegida.jsx` — protección de rutas por autenticación y rol
 - `src/services/` — capa Axios separada por recurso (auth, pedidos, menús)
